@@ -1,16 +1,31 @@
 document.getElementById('createAccountForm').addEventListener('submit', function(event) {
     event.preventDefault();
     
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const errorMessage = document.getElementById('errorMessage');
 
     if (password !== confirmPassword) {
         errorMessage.textContent = 'Passwords do not match.';
-    } else {
-        errorMessage.textContent = '';
-        // Proceed with form submission or further processing
-        alert('Account created successfully!');
-        // For actual implementation, you would typically send the form data to a server here.
-    }
+        return;
+    } 
+
+    // Store information in local storage
+    const user = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password // Note: Storing plain passwords is insecure. This is just for demonstration.
+    };
+
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    users.push(user);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    errorMessage.textContent = '';
+    alert('Account created successfully!');
+    document.getElementById('createAccountForm').reset(); // Reset form fields
 });
